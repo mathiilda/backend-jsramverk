@@ -1,12 +1,14 @@
-// ev behövs body parser
 const express = require("express");
 const cors = require('cors');
 const morgan = require('morgan');
 const app = express();
 const port = process.env.PORT || 1337;
 const index = require('./routes/index');
+const bodyParser = require("body-parser");
 
 app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 if (process.env.NODE_ENV !== 'test') {
     app.use(morgan('combined'));
