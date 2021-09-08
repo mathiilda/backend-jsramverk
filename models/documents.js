@@ -33,8 +33,6 @@ const documents = {
             let query = { "_id": ObjectId(id) };
             let result = await db.collection.findOne(query);
 
-            // console.log(result);
-
             return res.status(200).json({
                 data: result
             })
