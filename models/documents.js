@@ -83,21 +83,7 @@ const documents = {
             let query = { "_id": ObjectId(id) };
             let updatedDoc = { "text": text, "title": title }
             const options = { upsert: true };
-            let result = await db.collection.replaceOne(query, updatedDoc, options);
-
-            // if (result.modifiedCount === 0 && result.upsertedCount === 0) {
-            //     console.log("No changes made to the collection.");
-            // } else {
-            //     if (result.matchedCount === 1) {
-            //         console.log("Matched " + result.matchedCount + " documents.");
-            //     }
-            //     if (result.modifiedCount === 1) {
-            //         console.log("Updated one document.");
-            //     }
-            //     if (result.upsertedCount === 1) {
-            //         console.log("Inserted one new document with an _id of " + result.upsertedId._id);
-            //     }
-            // }
+            await db.collection.replaceOne(query, updatedDoc, options);
 
             return res.status(200).json({
                 data: "Document updated."

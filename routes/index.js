@@ -1,4 +1,3 @@
-
 var express = require('express');
 var router = express.Router();
 const documents = require("../models/documents.js");
@@ -24,15 +23,15 @@ router.get('/docs/:id', (req, res) => {
 });
 
 // create document
-// update to post
-router.get('/docs/create/:title&:text', (req, res) => {
-    documents.create(res, req.params.text, req.params.title)
+router.post('/docs/create', (req, res) => {
+    // title, text
+    documents.create(res, req.body.text, req.body.title)
 });
 
 // update document
-// update to put
-router.get('/docs/update/:id&:title&:text', (req, res) => {
-    documents.update(res, req.params.id, req.params.text, req.params.title)
+router.put('/docs/update', (req, res) => {
+    //text, title, id
+    documents.update(res, req.body.id, req.body.text, req.body.title)
 });
 
 module.exports = router;
