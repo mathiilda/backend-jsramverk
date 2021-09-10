@@ -9,9 +9,17 @@ This is the backend part of my project for the course jsramverk.
 
 2. Run <code>npm install</code>.
 
-3. Run <code>npm run start</code> to start the server.
+3. Create a <code>config.json</code> in the root of the project where you can store your username and password for mongodb. The file should look like this:
+````
+{
+    "username": "yourusernamehere"
+    "password": "yourpasswordhere"
+}
+````
 
-4. Open <code>localhost:1337</code> in your browser to access the routes.
+4. Run <code>npm run start</code> to start the server.
+
+5. Open <code>localhost:1337</code> in your browser to access the routes.
 
 <br>
 
