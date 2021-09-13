@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "nyc --reporter=html --reporter=text mocha 'test/**/*.js'",
+    "test": "nyc mocha 'test/**/*.js'",
     "start": "node app.js",
     "production": "NODE_ENV='production' node app.js"
   },
