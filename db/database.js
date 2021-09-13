@@ -7,7 +7,7 @@ const database = {
         let dsn = `mongodb+srv://${config.username}:${config.password}@cluster0.ay5cw.mongodb.net/texteditor?retryWrites=true&w=majority`;
 
         if (process.env.NODE_ENV === 'test') {
-            dsn = "mongodb://localhost:27017/test";
+            dsn = `mongodb+srv://${config.username}:${config.password}@cluster0.ay5cw.mongodb.net/texteditor-test?retryWrites=true&w=majority`
         }
 
         const client  = await mongo.connect(dsn, {
@@ -16,8 +16,6 @@ const database = {
         });
         const db = await client.db();
         const collection = await db.collection(collectionName);
-
-        console.log(collection);
 
         return {
             collection: collection,
