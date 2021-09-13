@@ -1,7 +1,8 @@
 # Backend-jsramverk
 
-This is the backend part of my project for the course jsramverk.
+[![Build Status](https://app.travis-ci.com/mathiilda/backend-jsramverk.svg?branch=master)](https://app.travis-ci.com/mathiilda/backend-jsramverk)
 
+This is the backend part of my project for the course jsramverk.
 
 ## How to use
 
@@ -10,12 +11,13 @@ This is the backend part of my project for the course jsramverk.
 2. Run <code>npm install</code>.
 
 3. Create a <code>config.json</code> in the root of the project where you can store your username and password for mongodb. The file should look like this:
-````
+
+```
 {
     "username": "yourusernamehere"
     "password": "yourpasswordhere"
 }
-````
+```
 
 4. Run <code>npm run start</code> to start the server.
 
