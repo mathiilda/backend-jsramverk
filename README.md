@@ -23,8 +23,6 @@ This is the backend part of my project for the course jsramverk.
 
 5. Open <code>localhost:1337</code> in your browser to access the routes.
 
-<br>
-
 ## Routes
 
 The following routes are available:
