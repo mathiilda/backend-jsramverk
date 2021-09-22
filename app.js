@@ -2,6 +2,8 @@ const express = require("express");
 const cors = require('cors');
 const morgan = require('morgan');
 const app = express();
+const httpServer = require("http").createServer(app);
+
 const port = process.env.PORT || 1337;
 const index = require('./routes/index');
 const bodyParser = require("body-parser");
@@ -39,6 +41,27 @@ app.use((err, req, res, next) => {
     });
 });
 
+
 app.use('/', index);
-const server = app.listen(port, () => console.log(`Example API listening on port ${port}!`));
+
+const io = require("socket.io")(httpServer, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"]
+  }
+});
+
+io.sockets.on('connection', function(socket) {
+    socket.on('create', function(room) {
+        socket.join(room);
+    });
+
+    socket.on('doc', function(data) {
+        socket.to(data["_id"]).emit("doc", data);
+        console.log(data);
+    });
+});
+
+const server = httpServer.listen(port, () => console.log(`Example API listening on port ${port}!`));
+
 module.exports = server;
