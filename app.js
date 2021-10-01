@@ -4,7 +4,7 @@ const morgan = require('morgan');
 const app = express();
 const httpServer = require("http").createServer(app);
 
-const port = process.env.PORT || 1999; // gå tbx till 1337
+const port = process.env.PORT || 1337;
 const index = require('./routes/index');
 const bodyParser = require("body-parser");
 
