@@ -2,12 +2,13 @@ const { ObjectId } = require("bson");
 const database = require("../db/database.js");
 
 const documents = {
-    getAll: async function (res) {
+    getAll: async function (res, userId) {
         let db;
 
         try {
+            database.setCollectionName("docs");
             db = await database.getDb();
-            const allDocuments = await db.collection.find().toArray();
+            const allDocuments = await db.collection.find({"users": ObjectId(userId)}).toArray();
 
             return res.status(200).json({
                 data: allDocuments
@@ -25,13 +26,18 @@ const documents = {
             await db.client.close();
         }
     },
-    getSpecific: async function(res, id) {
+    getSpecific: async function(res, id, getUserIds=false) {
+        
         let db;
-
         try {
+            database.setCollectionName("docs");
             db = await database.getDb();
             let query = { "_id": ObjectId(id) };
             let result = await db.collection.findOne(query);
+
+            if (getUserIds) {
+                return result;
+            }
 
             return res.status(200).json({
                 data: result
@@ -50,12 +56,13 @@ const documents = {
             await db.client.close();
         }
     },
-    create: async function(res, text, title) {
+    create: async function(res, text, title, userId) {
         let db;
 
         try {
+            database.setCollectionName("docs");
             db = await database.getDb();
-            let item = { "_id": ObjectId(), "text": text, "title": title };
+            let item = { "_id": ObjectId(), "text": text, "title": title, "users": [ObjectId(userId)] };
             await db.collection.insertOne(item);
 
             return res.status(200).json({
@@ -79,14 +86,47 @@ const documents = {
         let db;
 
         try {
+            database.setCollectionName("docs");
             db = await database.getDb();
             let query = { "_id": ObjectId(id) };
-            let updatedDoc = { "text": text, "title": title }
-            const options = { upsert: true };
-            await db.collection.replaceOne(query, updatedDoc, options);
+            // let result = await this.getSpecific(res, id, true);
+            let updatedDoc = { "text": text, "title": title}
+            // const options = { upsert: true };
+            await db.collection.updateOne(query, {$set: updatedDoc});
 
             return res.status(200).json({
                 data: "Document updated."
+            })
+
+        } catch (err) {
+            return res.status(500).json({
+                error: {
+                    status: 500,
+                    path: "/documents/update",
+                    title: "Database error",
+                    message: err.message
+                }
+            });
+        } finally {
+            await db.client.close();
+        }
+    },
+    addUser: async function(res, id, username) {
+        let db;
+
+        try {
+            database.setCollectionName("users");
+            db = await database.getDb();
+            let user = await db.collection.findOne({ "username": username });
+
+            database.setCollectionName("docs");
+            db = await database.getDb();
+            let query = { "_id": ObjectId(id) };
+
+            await db.collection.updateOne(query, {$addToSet: {"users": user._id}});
+
+            return res.status(200).json({
+                data: "User added."
             })
 
         } catch (err) {

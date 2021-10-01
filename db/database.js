@@ -1,5 +1,5 @@
 const mongo = require("mongodb").MongoClient;
-const collectionName = "docs";
+let collectionName = "docs";
 
 let config;
 
@@ -13,7 +13,11 @@ const username = process.env.SECRET_USERNAME || config.username;
 const password = process.env.SECRET_PASSWORD || config.password;
 
 const database = {
+    setCollectionName: async function setCollectionName (name) {
+        collectionName = name;
+    },
     getDb: async function getDb () {
+        console.log(collectionName);
         let dsn = `mongodb+srv://${username}:${password}@cluster0.ay5cw.mongodb.net/texteditor?retryWrites=true&w=majority`;
 
         if (process.env.NODE_ENV === 'test') {

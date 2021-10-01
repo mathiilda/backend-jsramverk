@@ -4,7 +4,7 @@ const morgan = require('morgan');
 const app = express();
 const httpServer = require("http").createServer(app);
 
-const port = process.env.PORT || 1337;
+const port = process.env.PORT || 1999; // gå tbx till 1337
 const index = require('./routes/index');
 const bodyParser = require("body-parser");
 
@@ -18,8 +18,8 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 app.use((req, res, next) => {
-    console.log(req.method);
-    console.log(req.path);
+    // console.log(req.method);
+    // console.log(req.path);
     var err = new Error("Not Found");
     err.status = 404;
     next();
@@ -58,7 +58,6 @@ io.sockets.on('connection', function(socket) {
 
     socket.on('doc', function(data) {
         socket.to(data["_id"]).emit("doc", data);
-        console.log(data);
     });
 });
 
