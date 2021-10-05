@@ -4,9 +4,14 @@ const morgan = require('morgan');
 const app = express();
 const httpServer = require("http").createServer(app);
 
+const visual = true;
+const { graphqlHTTP } = require('express-graphql');
+const {buildSchema} = require('graphql');
+
 const port = process.env.PORT || 1337;
 const index = require('./routes/index');
 const bodyParser = require("body-parser");
+const documents = require("./models/documents.js");
 
 app.use(cors());
 app.options('*', cors());
@@ -43,6 +48,19 @@ app.use((err, req, res, next) => {
 
 
 app.use('/', index);
+
+var schema = buildSchema(`type Query {docs(userId: String) : String}`);
+var root = {
+    docs: async ({userId}) => {
+        return await documents.getAll(undefined, userId);
+    }
+}
+
+app.use('/graphql', graphqlHTTP({
+  schema: schema,
+  rootValue: root,
+  graphiql: false, // Visual är satt till true under utveckling
+}));
 
 const io = require("socket.io")(httpServer, {
   cors: {

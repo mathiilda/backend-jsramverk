@@ -9,6 +9,11 @@ const documents = {
             database.setCollectionName("docs");
             db = await database.getDb();
             const allDocuments = await db.collection.find({"users": ObjectId(userId)}).toArray();
+            // console.log(allDocuments);
+
+            if (res === undefined) {
+                return JSON.stringify(allDocuments);
+            }
 
             return res.status(200).json({
                 data: allDocuments
