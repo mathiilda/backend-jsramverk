@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const documents = require("../models/documents.js")
 const users = require("../models/users.js");
+const mail = require("../models/mail.js");
 
 router.get('/', (req, res) => {
     const data = {
@@ -35,6 +36,12 @@ router.post('/docs/create',
     (req, res) => documents.create(res, req.body.text, req.body.title, req.body.userId)
 );
 
+// create pdf
+router.post('/docs/createPdf', 
+    (req, res, next) => users.verifyToken(req, res, next),
+    (req, res) => documents.createPdf(res, req.body.text, req.body.title)
+);
+
 // update document
 router.put('/docs/update',
     (req, res, next) => users.verifyToken(req, res, next),
@@ -66,5 +73,16 @@ router.post('/users/getSpecific', (req, res) => {
 router.post('/users/login', (req, res) => {
     users.login(res, req.body.username, req.body.password)
 });
+
+
+/*
+* ROUTES RELATED TO USERS
+*/
+
+// mail invite to user
+router.get('/mail/send/:recipient&:documentId',
+    // (req, res, next) => users.verifyToken(req, res, next),
+    (req, res) => mail.sendMail(req.params.recipient, req.params.documentId)
+);
 
 module.exports = router;

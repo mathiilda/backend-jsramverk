@@ -1,15 +1,24 @@
+// var html_to_pdf = require('html-pdf-node');
+const dataToPdf = require("from-data-to-pdf");
 const { ObjectId } = require("bson");
+const downloadsFolder = require('downloads-folder');
 const database = require("../db/database.js");
+const puppeteer = require('puppeteer');
+
+const path = downloadsFolder();
 
 const documents = {
     getAll: async function (res, userId) {
         let db;
 
+        console.log(userId);
+
         try {
             database.setCollectionName("docs");
             db = await database.getDb();
             const allDocuments = await db.collection.find({"users": ObjectId(userId)}).toArray();
-            // console.log(allDocuments);
+
+            console.log(allDocuments);
 
             if (res === undefined) {
                 return JSON.stringify(allDocuments);
@@ -87,6 +96,25 @@ const documents = {
             await db.client.close();
         }
     },
+    createPdf: async function(res, text) {
+        const browser = await puppeteer.launch({ headless: true });
+        const newPage = await browser.newPage();
+        await newPage.setContent(text);
+        const buffer = await newPage.pdf({
+            format: 'A4',
+            margin: {
+                left: '15px',
+                top: '25px',
+                right: '15px',
+                bottom: '25px'
+            }
+        });
+
+        console.log(newPage);
+
+        await browser.close();
+        res.end(buffer);
+    },
     update: async function(res, id, text, title) {
         let db;
 
@@ -94,9 +122,7 @@ const documents = {
             database.setCollectionName("docs");
             db = await database.getDb();
             let query = { "_id": ObjectId(id) };
-            // let result = await this.getSpecific(res, id, true);
-            let updatedDoc = { "text": text, "title": title}
-            // const options = { upsert: true };
+            let updatedDoc = { "text": text, "title": title};
             await db.collection.updateOne(query, {$set: updatedDoc});
 
             return res.status(200).json({

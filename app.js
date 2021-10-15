@@ -12,6 +12,12 @@ const port = process.env.PORT || 1337;
 const index = require('./routes/index');
 const bodyParser = require("body-parser");
 const documents = require("./models/documents.js");
+const mail = require("./models/mail.js");
+const { addUser } = require("./models/documents.js");
+
+// app.use(cors({
+//     origin: ["http://localhost:3000", "https://student.bth.se"]
+// }));
 
 app.use(cors());
 app.options('*', cors());
@@ -25,6 +31,8 @@ if (process.env.NODE_ENV !== 'test') {
 app.use((req, res, next) => {
     // console.log(req.method);
     // console.log(req.path);
+    
+    // res.header('Access-Control-Allow-Origin', '*');
     var err = new Error("Not Found");
     err.status = 404;
     next();
