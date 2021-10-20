@@ -23,7 +23,7 @@ const users = {
             let db;
 
             try {
-                 database.setCollectionName("users");
+                database.setCollectionName("users");
                 db = await database.getDb();
                 let id = ObjectId();
                 let item = { "_id": id, "username": username, "password": hash };

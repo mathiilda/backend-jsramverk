@@ -3,6 +3,7 @@ var router = express.Router();
 const documents = require("../models/documents.js")
 const users = require("../models/users.js");
 const mail = require("../models/mail.js");
+const comment = require("../models/comment.js");
 
 router.get('/', (req, res) => {
     const data = {
@@ -33,13 +34,13 @@ router.post('/docs/getSpecific',
 // create document
 router.post('/docs/create', 
     (req, res, next) => users.verifyToken(req, res, next),
-    (req, res) => documents.create(res, req.body.text, req.body.title, req.body.userId)
+    (req, res) => documents.create(res, req.body.text, req.body.title, req.body.userId, req.body.mode)
 );
 
 // create pdf
-router.post('/docs/createPdf', 
-    (req, res, next) => users.verifyToken(req, res, next),
-    (req, res) => documents.createPdf(res, req.body.text, req.body.title)
+router.get('/docs/createPdf/:id', 
+    // (req, res, next) => users.verifyToken(req, res, next),
+    (req, res) => documents.createPdf(res, req.params.id)
 );
 
 // update document
@@ -83,6 +84,23 @@ router.post('/users/login', (req, res) => {
 router.get('/mail/send/:recipient&:documentId',
     // (req, res, next) => users.verifyToken(req, res, next),
     (req, res) => mail.sendMail(req.params.recipient, req.params.documentId)
+);
+
+
+
+/*
+* ROUTES RELATED TO COMMENTS
+*/
+
+// mail invite to user
+router.post('/comment/create',
+    // (req, res, next) => users.verifyToken(req, res, next),
+    (req, res) => comment.create(res, req.body.text)
+);
+
+router.post('/comment/getSpecific',
+    // (req, res, next) => users.verifyToken(req, res, next),
+    (req, res) => comment.getSpecific(res, req.body.id)
 );
 
 module.exports = router;

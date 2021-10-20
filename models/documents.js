@@ -1,24 +1,17 @@
 // var html_to_pdf = require('html-pdf-node');
 const dataToPdf = require("from-data-to-pdf");
 const { ObjectId } = require("bson");
-const downloadsFolder = require('downloads-folder');
 const database = require("../db/database.js");
 const puppeteer = require('puppeteer');
 
-const path = downloadsFolder();
-
 const documents = {
-    getAll: async function (res, userId) {
+    getAll: async function (res, userId, mode) {
         let db;
-
-        console.log(userId);
 
         try {
             database.setCollectionName("docs");
             db = await database.getDb();
-            const allDocuments = await db.collection.find({"users": ObjectId(userId)}).toArray();
-
-            console.log(allDocuments);
+            const allDocuments = await db.collection.find({"users": ObjectId(userId), "mode": mode}).toArray();
 
             if (res === undefined) {
                 return JSON.stringify(allDocuments);
@@ -41,7 +34,6 @@ const documents = {
         }
     },
     getSpecific: async function(res, id, getUserIds=false) {
-        
         let db;
         try {
             database.setCollectionName("docs");
@@ -70,13 +62,14 @@ const documents = {
             await db.client.close();
         }
     },
-    create: async function(res, text, title, userId) {
+    create: async function(res, text, title, userId, mode) {
         let db;
 
         try {
             database.setCollectionName("docs");
             db = await database.getDb();
-            let item = { "_id": ObjectId(), "text": text, "title": title, "users": [ObjectId(userId)] };
+            let item = { "_id": ObjectId(), "text": text, "title": title, "users": [ObjectId(userId)], "mode": mode };
+            console.log(item);
             await db.collection.insertOne(item);
 
             return res.status(200).json({
@@ -96,10 +89,12 @@ const documents = {
             await db.client.close();
         }
     },
-    createPdf: async function(res, text) {
+    createPdf: async function(res, id) {
+
+        let result = await this.getSpecific(res, id, true);
         const browser = await puppeteer.launch({ headless: true });
         const newPage = await browser.newPage();
-        await newPage.setContent(text);
+        await newPage.setContent(result.text);
         const buffer = await newPage.pdf({
             format: 'A4',
             margin: {
@@ -109,9 +104,6 @@ const documents = {
                 bottom: '25px'
             }
         });
-
-        console.log(newPage);
-
         await browser.close();
         res.end(buffer);
     },

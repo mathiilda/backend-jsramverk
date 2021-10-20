@@ -57,10 +57,10 @@ app.use((err, req, res, next) => {
 
 app.use('/', index);
 
-var schema = buildSchema(`type Query {docs(userId: String) : String}`);
+var schema = buildSchema(`type Query {docs(userId: String, mode: Boolean) : String}`);
 var root = {
-    docs: async ({userId}) => {
-        return await documents.getAll(undefined, userId);
+    docs: async ({userId, mode}) => {
+        return await documents.getAll(undefined, userId, mode);
     }
 }
 
