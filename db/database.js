@@ -3,14 +3,20 @@ let collectionName = "docs";
 
 let config;
 
+let username;
+let password;
+
 try {
     config = require("../config.json");
+    username = config.username;
+    password = config.password;
 } catch (err) {
-    console.log(err);
+    username = process.env.SECRET_USERNAME;
+    password = process.env.SECRET_PASSWORD;
 }
 
-const username = process.env.SECRET_USERNAME || config.username;
-const password = process.env.SECRET_PASSWORD || config.password;
+/* const username = process.env.SECRET_USERNAME || config.username;
+const password = process.env.SECRET_PASSWORD || config.password; */
 
 const database = {
     setCollectionName: async function setCollectionName (name) {
