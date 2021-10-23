@@ -6,14 +6,22 @@ let config;
 let username;
 let password;
 
-try {
-    config = require("../config.json");
+if (File.exists("../config.json")) {
     username = config.username;
     password = config.password;
-} catch (err) {
+} else {
     username = process.env.SECRET_USERNAME;
     password = process.env.SECRET_PASSWORD;
 }
+
+// try {
+//     config = require("../config.json");
+//     username = config.username;
+//     password = config.password;
+// } catch (err) {
+//     username = process.env.SECRET_USERNAME;
+//     password = process.env.SECRET_PASSWORD;
+// }
 
 /* const username = process.env.SECRET_USERNAME || config.username;
 const password = process.env.SECRET_PASSWORD || config.password; */
