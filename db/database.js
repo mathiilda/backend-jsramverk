@@ -1,4 +1,5 @@
 const mongo = require("mongodb").MongoClient;
+const fs = require('fs');
 let collectionName = "docs";
 
 let config;
@@ -6,7 +7,7 @@ let config;
 let username;
 let password;
 
-if (File.exists("../config.json")) {
+if (fs.existsSync("../config.json")) {
     username = config.username;
     password = config.password;
 } else {
