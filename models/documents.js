@@ -69,7 +69,6 @@ const documents = {
             database.setCollectionName("docs");
             db = await database.getDb();
             let item = { "_id": ObjectId(), "text": text, "title": title, "users": [ObjectId(userId)], "mode": mode };
-            console.log(item);
             await db.collection.insertOne(item);
 
             return res.status(200).json({
@@ -89,24 +88,24 @@ const documents = {
             await db.client.close();
         }
     },
-    createPdf: async function(res, id) {
+    // createPdf: async function(res, id) {
 
-        let result = await this.getSpecific(res, id, true);
-        const browser = await puppeteer.launch({ headless: true });
-        const newPage = await browser.newPage();
-        await newPage.setContent(result.text);
-        const buffer = await newPage.pdf({
-            format: 'A4',
-            margin: {
-                left: '15px',
-                top: '25px',
-                right: '15px',
-                bottom: '25px'
-            }
-        });
-        await browser.close();
-        res.end(buffer);
-    },
+    //     let result = await this.getSpecific(res, id, true);
+    //     const browser = await puppeteer.launch({ headless: true });
+    //     const newPage = await browser.newPage();
+    //     await newPage.setContent(result.text);
+    //     const buffer = await newPage.pdf({
+    //         format: 'A4',
+    //         margin: {
+    //             left: '15px',
+    //             top: '25px',
+    //             right: '15px',
+    //             bottom: '25px'
+    //         }
+    //     });
+    //     await browser.close();
+    //     res.end(buffer);
+    // },
     update: async function(res, id, text, title) {
         let db;
 

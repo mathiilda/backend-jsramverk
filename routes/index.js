@@ -37,12 +37,6 @@ router.post('/docs/create',
     (req, res) => documents.create(res, req.body.text, req.body.title, req.body.userId, req.body.mode)
 );
 
-// create pdf
-router.get('/docs/createPdf/:id', 
-    // (req, res, next) => users.verifyToken(req, res, next),
-    (req, res) => documents.createPdf(res, req.params.id)
-);
-
 // update document
 router.put('/docs/update',
     (req, res, next) => users.verifyToken(req, res, next),
@@ -82,7 +76,6 @@ router.post('/users/login', (req, res) => {
 
 // mail invite to user
 router.get('/mail/send/:recipient&:documentId',
-    // (req, res, next) => users.verifyToken(req, res, next),
     (req, res) => mail.sendMail(req.params.recipient, req.params.documentId)
 );
 
@@ -94,12 +87,10 @@ router.get('/mail/send/:recipient&:documentId',
 
 // mail invite to user
 router.post('/comment/create',
-    // (req, res, next) => users.verifyToken(req, res, next),
     (req, res) => comment.create(res, req.body.text)
 );
 
 router.post('/comment/getSpecific',
-    // (req, res, next) => users.verifyToken(req, res, next),
     (req, res) => comment.getSpecific(res, req.body.id)
 );
 

@@ -27,7 +27,6 @@ const comment = {
     } finally {
         await db.client.close();
     }
-    
   },
   getSpecific: async function(res, id) {
     let db;
@@ -36,8 +35,6 @@ const comment = {
         database.setCollectionName("comments");
         db = await database.getDb();
         let result = await db.collection.find({"_id": ObjectId(id)}).toArray();
-
-        console.log(result);
 
         return res.status(200).json({
             data: result
