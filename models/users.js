@@ -1,10 +1,12 @@
 const { ObjectId } = require("bson");
 const database = require("../db/database.js");
 const bcrypt = require('bcryptjs');
-const config = require("../config.json");
 const jwt = require('jsonwebtoken');
 
-const secret = config.secret;
+if (process.env.NODE_ENV !== "test") {
+    const config = require("../config.json");
+    const secret = config.secret;
+}
 
 const users = {
     create: async function(res, username, password) {

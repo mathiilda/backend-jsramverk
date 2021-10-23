@@ -1,31 +1,19 @@
 const mongo = require("mongodb").MongoClient;
-const fs = require('fs');
 let collectionName = "docs";
 
 let config;
 
-let username;
-let password;
+// let username;
+// let password;
 
-if (fs.existsSync("../config.json")) {
-    username = config.username;
-    password = config.password;
-} else {
-    username = process.env.SECRET_USERNAME;
-    password = process.env.SECRET_PASSWORD;
+try {
+    config = require("../config.json");
+} catch (err) {
+    console.log(err);
 }
 
-// try {
-//     config = require("../config.json");
-//     username = config.username;
-//     password = config.password;
-// } catch (err) {
-//     username = process.env.SECRET_USERNAME;
-//     password = process.env.SECRET_PASSWORD;
-// }
-
-/* const username = process.env.SECRET_USERNAME || config.username;
-const password = process.env.SECRET_PASSWORD || config.password; */
+const username = process.env.SECRET_USERNAME || config.username;
+const password = process.env.SECRET_PASSWORD || config.password;
 
 const database = {
     setCollectionName: async function setCollectionName (name) {
