@@ -3,10 +3,15 @@ const database = require("../db/database.js");
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-if (process.env.NODE_ENV !== "test") {
-    const config = require("../config.json");
-    const secret = config.secret;
+let config;
+
+try {
+    config = require("../config.json");
+} catch (err) {
+    console.log(err);
 }
+
+const secret = config.secret || process.env.SECRET_SECRET;
 
 const users = {
     create: async function(res, username, password) {
