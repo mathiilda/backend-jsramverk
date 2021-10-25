@@ -51,20 +51,4 @@ describe('Documents', () => {
                 });
         });
     });
-
-    describe('PUT /docs/addUser', () => {
-        it('right returns', (done) => {
-            chai.request(server)
-                .put("/docs/addUser")
-                .send({id: "613f4f475201c044a9cf75c6", username:"test"})
-                .end((err, res) => {
-                    res.body.should.be.an("object");
-                    res.body.data.should.be.an("string");
-
-                    setTimeout(done, 250);
-
-                    // done();
-                });
-        });
-    });
 });
