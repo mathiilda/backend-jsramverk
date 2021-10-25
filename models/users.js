@@ -3,7 +3,6 @@ const database = require("../db/database.js");
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-
 let config;
 
 try {
@@ -12,7 +11,7 @@ try {
     console.log(err);
 }
 
-const secret = config.secret || process.env.SECRET_SECRET;
+const secret = process.env.SECRET_SECRET || config.secret;
 
 const users = {
     create: async function(res, username, password) {
