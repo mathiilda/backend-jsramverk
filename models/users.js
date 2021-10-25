@@ -3,6 +3,7 @@ const database = require("../db/database.js");
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+
 let config;
 
 try {
