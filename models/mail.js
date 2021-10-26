@@ -10,7 +10,7 @@ const mail = {
       from: 'mabw19@student.bth.se',
       subject: 'You have been invited!',
       text: 'One of your friends have invited to you edit one of their documents on JSEditor. Following the link to sign up: Sign up here! Kind regards, The JSEditor-team',
-      html: `One of your friends have invited to you edit one of their documents on <strong>JSEditor</strong>. <br><br> Following the link to sign up: <a href=${"http:/localhost:3000/?id=" + documentId}>Sign up here!</a> <br><br> Kind regards, <br> The JSEditor-team`,
+      html: `One of your friends have invited to you edit one of their documents on <strong>JSEditor</strong>. <br><br> Following the link to sign up: <a href=${"https://www.student.bth.se/~mabw19/editor/?id=" + documentId}>Sign up here!</a> <br><br> Kind regards, <br> The JSEditor-team`,
     }
     sgMail
       .send(msg)
